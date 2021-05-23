@@ -28,9 +28,44 @@ namespace api.prov.by
         {
 
             services.AddControllers();
+
+            services.AddApiVersioning(
+            options =>
+            {                
+                options.ReportApiVersions = true;
+            });
+            services.AddVersionedApiExplorer(
+            options =>
+            {                
+                options.GroupNameFormat = "'v'VVV";                
+                options.SubstituteApiVersionInUrl = true;
+            });
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "api.prov.by", Version = "v1" });
+                var titleBase = "ProvBY API";
+                var description = "REST API for data exchange";
+                var TermsOfService = new Uri("https://prov.by");
+                var License = new OpenApiLicense()
+                {
+                    Name = "MIT"
+                };
+                var Contact = new OpenApiContact()
+                {
+                    Name = "Vladimir Shoshyn",
+                    Email = "info@prov.by",
+                    Url = new Uri("https://prov.by")
+                };
+
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = titleBase + " v1",
+                    Description = description,
+                    TermsOfService = TermsOfService,
+                    License = License,
+                    Contact = Contact
+                });
             });
         }
 
